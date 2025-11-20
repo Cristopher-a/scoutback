@@ -52,3 +52,60 @@ def pits():
     response = supabase.table("pits").insert(data).execute()
     # Process the data as needed
     return jsonify({"message": "Pits data received", "data": body})
+
+@app.route('/match', methods=['POST'])
+def match():
+    body = request.json()
+    team_number= body.get("team_number")
+    match_number= body.get("match_number")
+    regional= body.get("regional")
+    check_inicio= body.get("check_inicio")
+    count_motiv= body.get("count_mottif")
+    count_in_cage_auto= body.get("count_in_cage_auto")
+    count_out_cage_auto= body.get("count_out_cage_auto")
+    count_in_cage_teleop= body.get("count_in_cage_teleop")
+    count_out_cage_teleop= body.get("count_out_cage_teleop")
+    count_rp= body.get("count_rp")
+    check_scoring= body.get("check_scoring")
+    count_in_cage_endgame= body.get("count_in_cage_endgame")    
+    count_out_cage_endgame= body.get("count_out_cage_endgame")
+    check_full_park= body.get("check_full_park")
+    check_partial_park= body.get("check_partial_park")
+    check_high= body.get("check_high")
+    robot_rating= body.get("robot_rating")
+    comment_robot= body.get("comment_robot")
+    driver_rating= body.get("driver_rating")
+    comment_driver= body.get("comment_driver")
+    general_rating= body.get("general_rating")
+    comment_general= body.get("comment_general")
+    data  ={
+        "team_number": team_number,
+        "match_number": match_number,
+        "regional": regional,
+
+        "check_inicio": check_inicio*3,
+        "count_motiv": count_motiv*2,
+        "count_in_cage_auto": count_in_cage_auto*3,
+        "count_out_cage_auto": count_out_cage_auto*1,
+
+        "count_in_cage_teleop": count_in_cage_teleop*3,
+        "count_out_cage_teleop": count_out_cage_teleop*1,
+        "count_rp": count_rp,
+
+        "check_scoring": check_scoring,
+        "count_in_cage_endgame": count_in_cage_endgame*3,
+        "count_out_cage_endgame": count_out_cage_endgame*1,
+        "check_full_park": 10 if check_full_park  =="Sí" else 0,
+        "check_partial_park": 5 if check_partial_park  =="Sí" else 0,
+        "check_high": 10 if check_high == "Sí" else 0,
+
+        "robot_rating": robot_rating,
+        "comment_robot": comment_robot,
+        "driver_rating": driver_rating,
+        "comment_driver": comment_driver,
+        "general_rating": general_rating,
+        "comment_general": comment_general
+    }
+
+    response = supabase.table("matches").insert(data).execute()
+    return jsonify(response), 200
